@@ -1,4 +1,4 @@
-#stocks = {"AAPL": 188, "TSLA": 258, "GOOGL": 142, "MSFT": 420}  # Hardcoded prices
+stocks = {"RELIANCE": 2850, "TCS": 4150, "HDFCBANK": 1650, "INFY": 1850, "HINDUNILVR": 2850}  # INR prices
 
 portfolio = {}
 while True:
@@ -14,30 +14,32 @@ while True:
 total_value = 0
 results = []
 print("\nPortfolio Summary:")
-print("Stock\tPrice\tShares\tValue")
-print("-" * 30)
+print("Stock\t\tPrice\tShares\tValue")
+print("-" * 40)
 
 for stock, shares in portfolio.items():
     price = stocks.get(stock, 0)
     value = price * shares
     total_value += value
     results.append([stock, price, shares, value])
-    print(f"{stock}\t${price}\t{shares}\t${value:,}")
+    print(f"{stock:<12}₹{price:,}\t{shares}\t₹{value:,}")
 
-print("-" * 30)
-print(f"Total Investment: ${total_value:,}")
+print("-" * 40)
+print(f"Total Investment: ₹{total_value:,}")
 
 # Save to CSV
 import csv
-with open('portfolio.csv', 'w', newline='') as f:
+with open('portfolio_inr.csv', 'w', newline='', encoding='utf-8') as f:
     writer = csv.writer(f)
-    writer.writerow(['Stock', 'Price', 'Shares', 'Value'])
+    writer.writerow(['Stock', 'Price (₹)', 'Shares', 'Value (₹)'])
     writer.writerows(results)
     writer.writerow(['Total', '', '', total_value])
 
 # Save to TXT
-with open('portfolio.txt', 'w') as f:
-    f.write("Stock Portfolio Tracker\n\n")
+with open('portfolio_inr.txt', 'w', encoding='utf-8') as f:
+    f.write("Indian Stock Portfolio Tracker\n\n")
     for stock, price, shares, value in results:
-        f.write(f"{stock}: ${price} x {shares} = ${value:,}\n")
-    f.write(f"\nTotal Investment: ${total_value:,}\n")
+        f.write(f"{stock}: ₹{price:,} x {shares} = ₹{value:,}\n")
+    f.write(f"\nTotal Investment: ₹{total_value:,}\n")
+
+print("Files saved: portfolio_inr.csv and portfolio_inr.txt")
