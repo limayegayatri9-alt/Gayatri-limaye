@@ -1,0 +1,43 @@
+#stocks = {"AAPL": 188, "TSLA": 258, "GOOGL": 142, "MSFT": 420}  # Hardcoded prices
+
+portfolio = {}
+while True:
+    stock = input("Enter stock symbol (or 'done' to finish): ").upper().strip()
+    if stock == 'DONE':
+        break
+    try:
+        shares = int(input(f"Enter shares for {stock}: "))
+        portfolio[stock] = shares
+    except ValueError:
+        print("Invalid input, skipping.")
+
+total_value = 0
+results = []
+print("\nPortfolio Summary:")
+print("Stock\tPrice\tShares\tValue")
+print("-" * 30)
+
+for stock, shares in portfolio.items():
+    price = stocks.get(stock, 0)
+    value = price * shares
+    total_value += value
+    results.append([stock, price, shares, value])
+    print(f"{stock}\t${price}\t{shares}\t${value:,}")
+
+print("-" * 30)
+print(f"Total Investment: ${total_value:,}")
+
+# Save to CSV
+import csv
+with open('portfolio.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(['Stock', 'Price', 'Shares', 'Value'])
+    writer.writerows(results)
+    writer.writerow(['Total', '', '', total_value])
+
+# Save to TXT
+with open('portfolio.txt', 'w') as f:
+    f.write("Stock Portfolio Tracker\n\n")
+    for stock, price, shares, value in results:
+        f.write(f"{stock}: ${price} x {shares} = ${value:,}\n")
+    f.write(f"\nTotal Investment: ${total_value:,}\n")
